@@ -5,11 +5,23 @@ class Pet extends React.Component {
     super(props);
   }
 
-  getGenderSymbol(props) {
-    if (this.props.gender === 'male') {
+  genderSymbol = () => {
+    if (this.props.pet.gender === 'male') {
       return '♂'
     } else {
       return '♀'
+    }
+  }
+
+  adopt = (event) => {
+    this.props.onAdoptPet(this.props.pet.id)
+  }
+
+  renderButton = (props) => {
+    if (this.props.isAdopted !== true) {
+      return <button className="ui primary button" onClick={this.adopt}>Adopt pet</button>
+    } else {
+      return <button className="ui disabled button">Already adopted</button>
     }
   }
 
@@ -17,18 +29,17 @@ class Pet extends React.Component {
     return (
       <div className="card">
         <div className="content">
-          <a className="header">Pet name: {this.props.name} (gender: ♂ or ♀) Gender: {this.getGenderSymbol}</a>
+          <a className="header">Pet name: {this.props.pet.name} <br/> Gender: {this.genderSymbol()}</a>
           <div className="meta">
-            <span className="date">Pet type: {this.props.type}</span>
+            <span className="date">Pet type: {this.props.pet.type}</span>
           </div>
           <div className="description">
-            <p>Age: {this.props.age}</p>
-            <p>Weight: {this.props.weight}</p>
+            <p>Age: {this.props.pet.age}</p>
+            <p>Weight: {this.props.pet.weight}</p>
           </div>
         </div>
         <div className="extra content">
-          <button className="ui primary button">Adopt pet</button>
-          <button className="ui disabled button">Already adopted</button>
+          {this.renderButton()}
         </div>
       </div>
     );
